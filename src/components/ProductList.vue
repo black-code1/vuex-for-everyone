@@ -20,7 +20,8 @@ export default {
   name: "ProductList",
   data() {
     return {
-      loading: false
+      loading: false,
+      productIndex: 1
     }
   },
 
@@ -29,7 +30,7 @@ export default {
       products: state => state.products.items
     }),
 
-    ...mapGetters({
+    ...mapGetters('products',{
       productIsInStock: 'productIsInStock'
     }),
 
@@ -37,16 +38,18 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchProducts: 'fetchProducts',
-      addProductToCart: 'addProductToCart'
+      fetchProducts: 'products/fetchProducts',
+      addProductToCart: 'cart/addProductToCart'
     }),
   },
 
-  created() {
+  created () {
     this.loading = true
-    this.fetchProducts()
+    fetchProducts()
       .then(() => this.loading = false)
   }
+
+
 }
 </script>
 
