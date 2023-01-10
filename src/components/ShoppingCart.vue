@@ -13,26 +13,23 @@
 </template>
 
 <script>
-import store from "../store";
+import {mapState, mapGetters, mapActions} from "vuex";
 
 export default {
   name: "ShoppingCart",
   methods: {
-    checkout () {
-      return store.dispatch('checkout')
-    }
+    ...mapActions(['checkout'])
   },
   computed: {
-    products () {
-      return store.getters.cartProducts
-    },
-    total () {
-      return store.getters.cartTotal
-    },
-    checkoutStatus () {
-      return store.state.checkoutStatus
-    }
-  }
+    ...mapGetters({
+      products: 'cartProducts',
+      total: 'cartTotal'
+    }),
+
+    ...mapState({
+      checkoutStatus: 'checkoutStatus'
+    }),
+  },
 }
 </script>
 
