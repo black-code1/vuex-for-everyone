@@ -7,6 +7,8 @@
       </li>
     </ul>
     <p>Total: {{total | currency}}</p>
+    <button @click="checkout">Checkout</button>
+    <p v-if="checkoutStatus">{{checkoutStatus}}</p>
   </div>
 </template>
 
@@ -15,12 +17,20 @@ import store from "../store";
 
 export default {
   name: "ShoppingCart",
+  methods: {
+    checkout () {
+      return store.dispatch('checkout')
+    }
+  },
   computed: {
     products () {
       return store.getters.cartProducts
     },
     total () {
       return store.getters.cartTotal
+    },
+    checkoutStatus () {
+      return store.state.checkoutStatus
     }
   }
 }
