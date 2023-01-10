@@ -17,9 +17,6 @@ import {mapState, mapGetters, mapActions} from "vuex";
 
 export default {
   name: "ShoppingCart",
-  methods: {
-    ...mapActions(['checkout'])
-  },
   computed: {
     ...mapGetters({
       products: 'cartProducts',
@@ -27,9 +24,13 @@ export default {
     }),
 
     ...mapState({
-      checkoutStatus: 'checkoutStatus'
+      checkoutStatus: state => state.cart.checkoutStatus
     }),
   },
+
+  methods: {
+    ...mapActions(['checkout'])
+  }
 }
 </script>
 
