@@ -1,12 +1,15 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import shop from "../api/shop";
+import {stat} from "copy-webpack-plugin/dist/utils/promisify";
 
 Vue.use(Vuex)
 
 export  default new Vuex.Store({
   state: { // = data
-    products: []
+    products: [],
+    // [id, quantity]
+    cart: []
   },
 
   getters: { // = computed properties
@@ -26,6 +29,22 @@ export  default new Vuex.Store({
         })
       })
 
+    },
+
+    addProductToCart (context, product) {
+      if(product.inventory > 0) {
+        const cartItem = context.state.cart.find(item => item.id === product.id)
+        // find cartItem
+        if(!cartItem){
+          // pushProductToCart
+          context.commit('pushProductToCart', product.id)
+        } else {
+          // incrementItemQuantity
+          context.commit('incrementItemQuantity', cartItem)
+        }
+        context.commit('decrementProductInventory', product)
+      }
+
     }
   },
 
@@ -33,6 +52,21 @@ export  default new Vuex.Store({
     setProducts (state, products){
       // update products
       state.products = products
+    },
+
+    pushProductToCart (state, productId) {
+      state.cart.push({
+        id: productId,
+        quantity: 1
+      })
+    },
+
+    incrementItemQuantity (state, cartItem) {
+      cartItem.quantity++
+    },
+
+    decrementProductInventory(state, product) {
+      product.inventory++
     }
   }
 })

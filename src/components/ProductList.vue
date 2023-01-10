@@ -5,7 +5,11 @@
       v-if="loading"
       src="https://i.imgur.com/JfPpwOA.gif">
     <ul v-else>
-      <li v-for="product in products">{{product.title}} - {{product.price}}</li>
+      <li v-for="product in products">
+        {{product.title}} - {{product.price}}
+        <button @click="addProductToCart(product)">Add to cart</button>
+      </li>
+
     </ul>
   </div>
 </template>
@@ -22,6 +26,12 @@ export default {
   computed: {
     products() {
       return store.getters.availableProducts
+    }
+  },
+
+  methods: {
+    addProductToCart(product) {
+      store.dispatch('addProductToCart', product)
     }
   },
 
